@@ -1,12 +1,12 @@
 #pragma warning(disable : 4996)
 
-/* 2105. [¸ğÀÇ SW ¿ª·®Å×½ºÆ®] µğÀúÆ® Ä«Æä */
+/* 2105. [ëª¨ì˜ SW ì—­ëŸ‰í…ŒìŠ¤íŠ¸] ë””ì €íŠ¸ ì¹´í˜ */
 #if 0
 /*
 https://swexpertacademy.com/main/learn/course/lectureProblemViewer.do
 */
 #endif
-#if 0
+#if 01
 #include <stdio.h>
 #define MAX (21)
 int a[MAX][MAX];
@@ -46,9 +46,9 @@ void DFS(int y, int x, int dir, int rot_dir, int cnt)
 	V[y][x] = 1;
 	S[a[y][x]] = 1;
 
-	DFS(y+dy[dir], x+dx[dir], dir, rot_dir, cnt+1); // Á÷Áø
+	DFS(y+dy[dir], x+dx[dir], dir, rot_dir, cnt+1); // ì§ì§„
 	if(dir+1>3) dir-=4;
-	DFS(y+dy[dir+1], x+dx[dir+1], dir+1, rot_dir+1, cnt+1); // È¸Àü
+	DFS(y+dy[dir+1], x+dx[dir+1], dir+1, rot_dir+1, cnt+1); // íšŒì „
 	V[y][x] = 0; S[a[y][x]]=0;
 }
 int main(void)
