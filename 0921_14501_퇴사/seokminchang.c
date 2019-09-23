@@ -1,4 +1,3 @@
-
 #include <stdio.h>
 #define MAX (20)
 typedef struct
@@ -11,7 +10,7 @@ int N;
 int wp, rp;
 int max;
 COU counsel[MAX];
-COU Que[MAX * MAX * 30];
+COU Que[MAX * MAX * MAX * MAX];
 void input(void)
 {
 	int i;
@@ -54,10 +53,11 @@ void BFS(int day)
 	rp = wp = 0;
 	if (counsel[day].Ti + day - 1 > N) return;
 	InQueue(day, counsel[day].Ti, counsel[day].Pi);
+	if (max < counsel[day].Pi) max = counsel[day].Pi;
 	while (rp < wp)
 	{
 		out = OutQueue();
-		for (i = day + 1; i <= N; i++)
+		for (i = out.day + 1; i <= N; i++)
 		{
 			//if (i == 10) printQue();
 			if (out.day + out.Ti > i) continue;
@@ -67,7 +67,7 @@ void BFS(int day)
 		}
 
 	}
-}	
+}
 
 
 int main(void)
