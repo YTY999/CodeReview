@@ -1,5 +1,5 @@
 // #15685. 드래곤 커브
-#if 0
+#if 01
 char map[101][101];
 char dirs[1025];
 short WP;
