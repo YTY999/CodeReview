@@ -1,6 +1,6 @@
 #pragma warning(disable : 4996)
-// ġŲ �Ÿ�
-#if 0
+// Ä¡Å² °Å¸®
+#if 01
 #include <stdio.h>
 #define MAX (55)
 #define ABS(m) (m) > 0 ? (m) : -(m)
