@@ -5,7 +5,7 @@ typedef struct _pos { int y; int x; int dist[13]; } POS;
 int a[MAX][MAX];
 POS house[2*MAX];
 int N, M;
-int V[14]; // ì¹˜í‚¨ì§‘ ë‚¨ê¸¸ì§€ ì—¬ë¶€
+int V[14]; // Ä¡Å²Áý ³²±æÁö ¿©ºÎ
 POS chic[14];
 int chic_cnt, home_cnt;
 int min = 0x7fffffff;
@@ -20,11 +20,11 @@ void input(void)
         for(j=1; j<=N; j++)
         {
             scanf("%d", &a[i][j]);
-            if(a[i][j]==1) // ì§‘
+            if(a[i][j]==1) // Áý
             { 
                 house[home_cnt].y = i; house[home_cnt++].x = j; 
             }
-            else if(a[i][j]==2) // ì¹˜í‚¨
+            else if(a[i][j]==2) // Ä¡Å²
             {
                 chic[chic_cnt].y = i; chic[chic_cnt++].x = j;
             }
@@ -58,6 +58,7 @@ int CalcDist(int d, int chic_num)
 
 void DFS(int d, int n)
 {
+    if(chic_cnt - (n+1) + d < M) return;
     if(d >= M)
     {
         if (min > chicDist_sum) min = chicDist_sum;
