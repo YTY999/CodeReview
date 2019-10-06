@@ -7,7 +7,6 @@ int dir[2048];
 int V[101][101];
 int G[] = {1, 2, 4, 8, 16, 32, 64, 128, 256, 512, 1024};
 
-
 void traceRoute(void)
 {
     int backpos;
@@ -15,31 +14,21 @@ void traceRoute(void)
 
     V[Y][X] =1;
     dir[dcnt++] = d;
-    X += dx[d];
-    Y += dy[d];
+    X += dx[d]; Y += dy[d];
     V[Y][X] =1;
-    while(cur_g != g)
+    while(cur_g++ != g)
     {
-        while(dcnt != G[cur_g])
-        {
-            d = (d+1)%4;
-            dir[dcnt++] = d;
-            X += dx[d];
-            Y += dy[d];
-            V[Y][X] = 1;            
-        }
-        cur_g++; backpos = dcnt;
-
+        backpos = dcnt;
         while(backpos)
         {
             d = (dir[--backpos] + 1) % 4;
             dir[dcnt++] = d;
-            X += dx[d];
-            Y += dy[d];
+            X += dx[d]; Y += dy[d];
             V[Y][X] = 1;
         }
     }
 }
+
 int countRect(void)
 {
     int i,j;
@@ -54,16 +43,14 @@ int countRect(void)
 
     return rcnt;
 } 
+
 int main(void)
 {
-    int i;
-
     scanf("%d", &N);
-    for(i=0;i<N;i++)
+    for(int i=0;i<N;i++)
     {
         dcnt = 0;
         scanf("%d %d %d %d", &X, &Y, &d, &g);
-
         traceRoute();
     }
 
