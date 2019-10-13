@@ -1,31 +1,3 @@
-/*
-N * N 크기의 땅을 구매 
-상도는 1 * 1 크기의 칸으로 이를 나누어 놓음 
-r이 행, c가 열 
-
-사계절 단위로 수행. 
-for 문을 한번 돌때마다 이 사계절을 수행.
-
-1단계 
-자신의 나이만큼 양분을 먹고, 나이가 1 증가. 
-(구조체 내부에 위치와 나이 정보 있어야 함) 
-(양분의 정보를 담고 있을 배열 필요) 
-양분을 먹지 못하면 죽는다. 죽는 나무는 별도로 기록 
-
-2단계 
-죽은 나무의 나이 / 2를 양분 배열에 추가 
-
-3단계 
-번식하는 나무. 인접한 8개의 칸에 나이가 1인 나무가 생긴다.
-이 부분을 어떻게 처리해줄지가 문제 ^오^
-구조체 배열을 세개 만들자. 두개 만들어서 
-한 배열에서 뒤에서부터 쭉 돌면서 r값 c값 같은 애의 양분을 소비하고,
-소비하고 나서 살아남은 애는 다른쪽 배열로 옮겨준다. 그리고 나서 나이를 증
-가시켜주고
-죽은 애들은 dead 배열에 추가해준다. 그리고 나서 2단계 때 하나씩 처리해주고.
-
-마지막 단계는 전체 영역에 양분을 추가해주면서 끝낸다.
-*/
 #include <stdio.h>
 typedef struct {
     int r;
@@ -33,34 +5,156 @@ typedef struct {
     int age;
 }T;
 
-T tree[2][105 * 105]; // 번갈아가면서 사용 예정 
-T dead[105 * 105]; // 죽은 애들만 따로 저장 
-int wp, rp;
+T tree[2][105 * 105 * 10]; // 번갈아가면서 사용 예정
+T dead[105 * 105 * 10]; // 죽은 애들만 따로 저장
+int wp;
 int dwp, drp;
 int N, M, K;
-int Map[]
-
+int Map[12][12];
+int yangboon[12][12];
+int order;
+int check;
 void input(void);
 void spring(void);
 void summer(void);
 void autumn(void);
 void winter(void);
+void printTree(void);
 
 int main(void)
 {
+    int i;
+    int cnt = 0;
+    input();
+    for (i = 0; i < K; i++)
+    {
+
+        spring();
+        summer();
+        autumn();
+
+        winter();
+    }
+
+
+    printf("%d\n", wp);
+
     return 0;
 
+}
+
+void printTree(void)
+{
+    int i;
+    printf("tree\n");
+    for (i = 0; i < wp; i++)
+    {
+
+        printf("%d %d %d", tree[order][i].r, tree[order][i].c, tree[order][i].age);
+    }
+    printf("fin\n");
 }
 
 void input(void)
 {
     int i, j;
-    scanf("%d %d %d", &N, &M, &K); 
-    for (i = 0; i < N; i++)
+    scanf("%d %d %d", &N, &M, &K);
+    for (i = 1; i <= N; i++)
     {
-        for (j = 0; j < N; j++)
+        for (j = 1; j <= N; j++)
         {
-            scanf()
+            scanf("%d", &yangboon[i][j]); // 양분 정보를 받는다.
+            Map[i][j] = 5;
+        }
+    }
+    for (i = 0; i < M; i++)
+    {
+	int a, b, c;
+        scanf("%d %d %d", &a, &b, &c);
+	tree[order][i].r = a;
+	tree[order][i].c = b;
+	tree[order][i].age = c;
+	wp++;
+    }
+    
+}
+
+void spring(void)
+{
+    int i;
+    int idx = 0;
+    int r, c;
+    for (i = wp-1; i >= 0; i--)
+    {
+        r = tree[order][i].r;
+        c = tree[order][i].c;
+        if (Map[r][c] >= tree[order][i].age)
+        {
+            Map[r][c] -= tree[order][i].age;
+            tree[order][i].age++;
+        }
+        else
+        {
+            dead[dwp++] = tree[order][i];
+            tree[order][i].age = -1;
+        }
+
+    }
+    for (i = 0; i < wp; i++)
+    {
+        if(tree[order][i].age <= 0) continue;
+        tree[order ^ 1][idx++] = tree[order][i];
+    }
+    wp = idx;
+    order ^= 1;
+}
+
+void summer(void)
+{
+    int i;
+    int r, c;
+    for (i = 0; i < dwp; i++)
+    {
+        r = dead[i].r;
+        c = dead[i].c;
+        Map[r][c] += (dead[i].age / 2);
+    }
+    dwp = 0;
+}
+
+void autumn(void)
+{
+    int i;
+    int j;
+    int nr, nc;
+    int tmp = wp;
+    int dr[] = {-1, -1, 0, 1, 1, 1, 0, -1};
+    int dc[] = {0, 1, 1, 1, 0, -1, -1, -1};
+    for (i = 0; i < tmp; i++)
+    {
+        if (tree[order][i].age % 5 || tree[order][i].age <= 0) continue;
+        for(j = 0; j < 8; j++)
+        {
+            nr = tree[order][i].r + dr[j];
+            nc = tree[order][i].c + dc[j];
+            if(nr < 1 || nc < 1 || nr > N || nc > N) continue;
+            tree[order][wp].r = nr;
+            tree[order][wp].c = nc;
+            tree[order][wp++].age = 1;
+
+        }
+
+    }
+}
+
+void winter(void)
+{
+    int i, j;
+    for (i = 1; i <= N; i++)
+    {
+        for (j = 1; j <= N; j++)
+        {
+            Map[i][j] += yangboon[i][j];
         }
     }
 }
